@@ -42,7 +42,7 @@ internal void RenderWeirdGradient(int xOffset, int yOffset)
 			uint8 Green = (y + yOffset);
 			uint8 Red = (y + yOffset);
 
-			*pixel++ = ((Red << 16) | Blue);
+			*pixel++ = ((Green << 8) | Blue);
 		}
 		Row += Pitch;
 	}
