@@ -87,7 +87,6 @@ internal void Win32LoadXInput()
 	}
 }
 
-
 internal void Win32InitDSound(HWND Window, int32 SamplesPerSecond, int32 BufferSize)
 {
 	HMODULE DSoundLibrary = LoadLibraryA("dsound.dll");
@@ -100,20 +99,20 @@ internal void Win32InitDSound(HWND Window, int32 SamplesPerSecond, int32 BufferS
 		LPDIRECTSOUND DirectSound;
 		if (DirectSoundCreate && SUCCEEDED(DirectSoundCreate(0, &DirectSound, 0)))
 		{
-			WAVEFORMATEX WaveFormat = {};
-			WaveFormat.wFormatTag = WAVE_FORMAT_PCM;
-			WaveFormat.nChannels = 2;
-			WaveFormat.nSamplesPerSec = SamplesPerSecond;
-			WaveFormat.nBlockAlign = (WaveFormat.nChannels * WaveFormat.wBitsPerSample) / 8;
+			WAVEFORMATEX WaveFormat    = {};
+			WaveFormat.wFormatTag      = WAVE_FORMAT_PCM;
+			WaveFormat.nChannels       = 2;
+			WaveFormat.nSamplesPerSec  = SamplesPerSecond;
+			WaveFormat.nBlockAlign     = (WaveFormat.nChannels * WaveFormat.wBitsPerSample) / 8;
 			WaveFormat.nAvgBytesPerSec = WaveFormat.nSamplesPerSec * WaveFormat.nBlockAlign;
-			WaveFormat.wBitsPerSample = 16;
-			WaveFormat.cbSize = 0;
+			WaveFormat.wBitsPerSample  = 16;
+			WaveFormat.cbSize          = 0;
 
 			if (SUCCEEDED(DirectSound->SetCooperativeLevel(Window, DSSCL_PRIORITY)))
 			{
 				BUFFERDESC BufferDescription = {};
-				BufferDescription.dwSize = sizeof(BufferDescription);
-				BufferDescription.dwFlags = DSBCAPS_PRIMARYBUFFER;
+				BufferDescription.dwSize     = sizeof(BufferDescription);
+				BufferDescription.dwFlags    = DSBCAPS_PRIMARYBUFFER;
 
 				// TODO: DSBCAPS_GLOBALFOCUS?
 				LPDIRECTSOUNDBUFFER PrimaryBuffer;
@@ -135,8 +134,8 @@ internal void Win32InitDSound(HWND Window, int32 SamplesPerSecond, int32 BufferS
 			}
 
 			BUFFERDESC BufferDescription = {};
-			BufferDescription.dwSize = sizeof(BufferDescription);
-			BufferDescription.dwFlags = DSBCAPS_PRIMARYBUFFER;
+			BufferDescription.dwSize     = sizeof(BufferDescription);
+			BufferDescription.dwFlags    = DSBCAPS_PRIMARYBUFFER;
 			LPDIRECTSOUNDBUFFER SecondaryBuffer;
 			if (SUCCEEDED(CreateSoundBuffer(&BufferDescription, &SecondaryBuffer, 0)))
 			{
@@ -160,7 +159,6 @@ internal void Win32InitDSound(HWND Window, int32 SamplesPerSecond, int32 BufferS
 		// TODO: Logging
 	}
 }
-
 
 internal win32_window_dimension Win32GetWindowDimension(HWND Window)
 {
@@ -199,11 +197,11 @@ internal void Win32ResizeDIBSection(win32_offscreen_buffer *Buffer, int Width, i
 	Buffer->Height = Height;
 	int BytesPerPixel = 4;
 
-	Buffer->Info.bmiHeader.biSize = sizeof(Buffer->Info.bmiHeader);
-	Buffer->Info.bmiHeader.biWidth = Buffer->Width;
-	Buffer->Info.bmiHeader.biHeight = -Buffer->Height;
-	Buffer->Info.bmiHeader.biPlanes = 1;
-	Buffer->Info.bmiHeader.biBitCount = 32;
+	Buffer->Info.bmiHeader.biSize        = sizeof(Buffer->Info.bmiHeader);
+	Buffer->Info.bmiHeader.biWidth       = Buffer->Width;
+	Buffer->Info.bmiHeader.biHeight      = -Buffer->Height;
+	Buffer->Info.bmiHeader.biPlanes      = 1;
+	Buffer->Info.bmiHeader.biBitCount    = 32;
 	Buffer->Info.bmiHeader.biCompression = BI_RGB;
 
 	int BitmapMemorySize = BytesPerPixel * (Buffer->Width * Buffer->Height);
@@ -345,10 +343,10 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE PrevInstance, LPSTR CommandLi
 
 	Win32ResizeDIBSection(&GlobalBackbuffer, 1280, 720);
 
-	WindowClass.style = CS_HREDRAW|CS_VREDRAW;
-	WindowClass.lpfnWndProc = Win32MainWindowCallback;
-	WindowClass.hInstance = Instance;
-	// WindowClass.hIcon = ;
+	WindowClass.style         = CS_HREDRAW|CS_VREDRAW;
+	WindowClass.lpfnWndProc   = Win32MainWindowCallback;
+	WindowClass.hInstance     = Instance;
+	// WindowClass.hIcon      = ;
 	WindowClass.lpszClassName = "HandmadeHeroWindowClass";
 
 	if (RegisterClass(&WindowClass)) {
@@ -384,18 +382,18 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE PrevInstance, LPSTR CommandLi
 						// NOTE: Controller is plugged in
 						XINPUT_GAMEPAD *Pad = &ControllerState.Gamepad;
 
-						bool Up = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_UP); 
-						bool Down = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_DOWN); 
-						bool Left = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_LEFT); 
-						bool Right = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_RIGHT); 
-						bool Start = (Pad->wButtons & XINPUT_GAMEPAD_START); 
-						bool Back = (Pad->wButtons & XINPUT_GAMEPAD_BACK); 
-						bool LeftShoulder = (Pad->wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER); 
+						bool Up            = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_UP); 
+						bool Down          = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_DOWN); 
+						bool Left          = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_LEFT); 
+						bool Right         = (Pad->wButtons & XINPUT_GAMEPAD_DPAD_RIGHT); 
+						bool Start         = (Pad->wButtons & XINPUT_GAMEPAD_START); 
+						bool Back          = (Pad->wButtons & XINPUT_GAMEPAD_BACK); 
+						bool LeftShoulder  = (Pad->wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER); 
 						bool RightShoulder = (Pad->wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER); 
-						bool AButton = (Pad->wButtons & XINPUT_GAMEPAD_A); 
-						bool BButton = (Pad->wButtons & XINPUT_GAMEPAD_B); 
-						bool XButton = (Pad->wButtons & XINPUT_GAMEPAD_X); 
-						bool YButton = (Pad->wButtons & XINPUT_GAMEPAD_Y);
+						bool AButton       = (Pad->wButtons & XINPUT_GAMEPAD_A); 
+						bool BButton       = (Pad->wButtons & XINPUT_GAMEPAD_B); 
+						bool XButton       = (Pad->wButtons & XINPUT_GAMEPAD_X); 
+						bool YButton       = (Pad->wButtons & XINPUT_GAMEPAD_Y);
 
 						int16 StickX = Pad->sThumbLX;
 						int16 StickY = Pad->sThumbLY;
